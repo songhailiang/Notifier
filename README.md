@@ -43,6 +43,10 @@ public enum NotifierKey: String {
 ```
 Notifier.register(.login, to: self, selector: #selector(handleNotification(_:)))
 ```
+Support Notification.Name:
+```
+Notifier.register(.UIKeyboardWillShow, to: self, selector: #selector(handleKeyboardWillShow(_:)))
+```
 
 ### Remove
 ```
