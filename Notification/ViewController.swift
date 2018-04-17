@@ -14,14 +14,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view, typically from a nib.
 
         Notifier.register(.login, to: self, selector: #selector(handleNotification(_:)))
-        Notifier.register(.keyboardWillShow, to: self, selector: #selector(handleKeyboardWillShow(_:)))
-        Notifier.register(.keyboardWillHide, to: self, selector: #selector(handleKeyboardWillHide(_:)))
+        Notifier.register(.UIKeyboardWillShow, to: self, selector: #selector(handleKeyboardWillShow(_:)))
+        Notifier.register(.UIKeyboardWillHide, to: self, selector: #selector(handleKeyboardWillHide(_:)))
     }
 
     deinit {
         Notifier.unregister(.login, from: self)
-        Notifier.unregister(.keyboardWillShow, from: self)
-        Notifier.unregister(.keyboardWillHide, from: self)
+        Notifier.unregister(.UIKeyboardWillShow, from: self)
+        Notifier.unregister(.UIKeyboardWillHide, from: self)
     }
 
     @objc func handleNotification(_ notification: Notification) {

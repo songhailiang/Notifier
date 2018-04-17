@@ -17,25 +17,8 @@ public enum NotifierName: String {
     case logout
     case registration = "NotificationKeyRegistration"
 
-    // system notifications
-    case keyboardWillShow
-    case keyboardDidShow
-    case keyboardWillHide
-    case keyboardDidHide
-
     var notificationName: Notification.Name {
-        switch self {
-        case .keyboardWillShow:
-            return Notification.Name.UIKeyboardWillShow
-        case .keyboardDidShow:
-            return Notification.Name.UIKeyboardDidShow
-        case .keyboardWillHide:
-            return Notification.Name.UIKeyboardWillHide
-        case .keyboardDidHide:
-            return Notification.Name.UIKeyboardDidHide
-        default:
-            return Notification.Name(rawValue: self.rawValue)
-        }
+        return Notification.Name(rawValue: self.rawValue)
     }
 }
 
@@ -81,6 +64,17 @@ public class Notifier {
         NotificationCenter.default.addObserver(observer, selector: selector, name: name.notificationName, object: nil)
     }
 
+    /// register a notification to an observer
+    ///
+    /// - Parameters:
+    ///   - name: Notification.Name
+    ///   - observer: notification observer
+    ///   - selector: notification handle function
+    public static func register(_ name: Notification.Name, to observer: Any, selector: Selector) {
+        unregister(name, from: observer) // to avoid added multi times
+        NotificationCenter.default.addObserver(observer, selector: selector, name: name, object: nil)
+    }
+
     /// remove a notification from an observer
     ///
     /// - Parameters:
@@ -90,6 +84,15 @@ public class Notifier {
         NotificationCenter.default.removeObserver(observer, name: name.notificationName, object: nil)
     }
 
+    /// remove a notification from an observer
+    ///
+    /// - Parameters:
+    ///   - name: Notification.Name
+    ///   - observer: notification observer
+    public static func unregister(_ name: Notification.Name, from observer: Any) {
+        NotificationCenter.default.removeObserver(observer, name: name, object: nil)
+    }
+
     /// post a notification with some values
     ///
     /// - Parameters:
@@ -97,5 +100,14 @@ public class Notifier {
     ///   - value: a dictionary value passed to the notification
     public static func post(_ name: NotifierName, value: [NotifierKey: Any]? = nil) {
         NotificationCenter.default.post(name: name.notificationName, object: nil, userInfo: value)
+    }
+
+    /// post a notification with some values
+    ///
+    /// - Parameters:
+    ///   - name: Notification.Name
+    ///   - value: a dictionary value passed to the notification
+    public static func post(_ name: Notification.Name, value: [NotifierKey: Any]? = nil) {
+        NotificationCenter.default.post(name: name, object: nil, userInfo: value)
     }
 }
